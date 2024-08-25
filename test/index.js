@@ -17,7 +17,7 @@ test('should return error if changelog version !== package.json version', functi
   ghRelease({
     workpath: fixture('mismatch')
   }, function (err, result) {
-    t.deepEqual(err.message, 'CHANGELOG.md out of sync with package.json (0.0.1 !== 0.0.0)')
+    t.deepEqual(err.message, 'README.md out of sync with package.json (0.0.1 !== 0.0.0)')
   })
 })
 
@@ -26,12 +26,12 @@ test('should return error if changelog version !== lerna.json version', function
   ghRelease({
     workpath: fixture('lerna-mismatch')
   }, function (err, result) {
-    t.deepEqual(err.message, 'CHANGELOG.md out of sync with lerna.json (0.0.1 !== 0.0.0)')
+    t.deepEqual(err.message, 'README.md out of sync with lerna.json (0.0.1 !== 0.0.0)')
   })
 })
 
 test('should return error if a non-empty unreleased section exists', function (t) {
-  const errStr = 'Unreleased changes detected in CHANGELOG.md, aborting'
+  const errStr = 'Unreleased changes detected in README.md, aborting'
   t.plan(1)
   ghRelease({
     workpath: fixture('unreleased')
@@ -45,12 +45,12 @@ test('should return error if no versions exist', function (t) {
   ghRelease({
     workpath: fixture('no-versions')
   }, function (err, result) {
-    t.deepEqual(err.message, 'CHANGELOG.md does not contain any versions')
+    t.deepEqual(err.message, 'README.md does not contain any versions')
   })
 })
 
 test('should allow empty unreleased sections', function (t) {
-  const errStr = 'Unreleased changes detected in CHANGELOG.md, aborting'
+  const errStr = 'Unreleased changes detected in README.md, aborting'
   t.plan(1)
   ghRelease({
     workpath: fixture('unreleased-alt')
@@ -60,7 +60,7 @@ test('should allow empty unreleased sections', function (t) {
 })
 
 test('should allow empty unreleased sub-sections', function (t) {
-  const errStr = 'Unreleased changes detected in CHANGELOG.md, aborting'
+  const errStr = 'Unreleased changes detected in README.md, aborting'
   t.plan(1)
   ghRelease({
     workpath: fixture('unreleased-empty-subsections')

@@ -21,7 +21,7 @@ function getDefaults (workPath, isEnterprise, callback) {
   }
   const owner = repoParts.user
   const repo = repoParts.repo
-  const logPath = path.resolve(workPath, 'CHANGELOG.md')
+  const logPath = path.resolve(workPath, 'README.md')
 
   changelogParser(logPath, function (err, result) {
     if (err) return callback(err)
@@ -37,13 +37,13 @@ function getDefaults (workPath, isEnterprise, callback) {
     })
 
     if (unreleased.length > 0) {
-      return callback(new Error('Unreleased changes detected in CHANGELOG.md, aborting'))
+      return callback(new Error('Unreleased changes detected in README.md, aborting'))
     }
 
     const log = result.versions.filter(function (release) { return release.version !== null })[0]
 
     if (!log) {
-      return callback(new Error('CHANGELOG.md does not contain any versions'))
+      return callback(new Error('README.md does not contain any versions'))
     }
 
     let lerna = {}
@@ -51,12 +51,12 @@ function getDefaults (workPath, isEnterprise, callback) {
     if (fs.existsSync(lernaPath)) {
       lerna = readJson(lernaPath) /* || {} */ // 👈 though I prefer this expression
       if (log.version !== lerna.version) {
-        errStr = 'CHANGELOG.md out of sync with lerna.json '
+        errStr = 'README.md out of sync with lerna.json '
         errStr += '(' + (log.version || log.title) + ' !== ' + lerna.version + ')'
         return callback(new Error(errStr))
       }
     } else if (log.version !== pkg.version) {
-      errStr = 'CHANGELOG.md out of sync with package.json '
+      errStr = 'README.md out of sync with package.json '
       errStr += '(' + (log.version || log.title) + ' !== ' + pkg.version + ')'
       return callback(new Error(errStr))
     }

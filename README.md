@@ -21,7 +21,7 @@ Create a GitHub Release for a Node package.
 ## Features
 
 - Uses the [Github Releases API](https://developer.github.com/v3/repos/releases/) to create a new GitHub release.
-- Defaults to using information from `package.json` and `CHANGELOG.md`.
+- Defaults to using information from `package.json` and `README.md`.
 - Supports uploading release assets.
 
 ## Install
@@ -60,7 +60,7 @@ https://github.com/ungoldman/gh-release-test/releases/tag/v1.0.9
 
 Should be run at the root of the project to be released.
 
-Expects a `package.json` and `CHANGELOG.md` in the working directory.
+Expects a `package.json` and `README.md` in the working directory.
 
 Prints release URL to `stdout` on success.
 
@@ -143,7 +143,7 @@ All default values taken from `package.json` unless specified otherwise.
 | `tag_name` | release tag | 'v' + `version` |
 | `target_commitish` | commitish value to tag | HEAD of current branch |
 | `name` | release title | 'v' + `version` |
-| `body` | release text | `CHANGELOG.md` section matching `version` |
+| `body` | release text | `README.md` section matching `version` |
 | `owner` | repo owner | repo owner in `repository` |
 | `repo` | repo name | repo name in `repository` |
 | `draft` | publish as draft | false |
@@ -155,7 +155,7 @@ Override defaults with flags (CLI) or the `options` object (node).
 
 ## Standards
 
-* `CHANGELOG.md`: http://keepachangelog.com
+* `README.md`: http://keepachangelog.com
 * `package.json`: https://docs.npmjs.com/files/package.json
 
 ## Example
@@ -174,7 +174,7 @@ Windows (XP, 2000) | `%USERPROFILE%/Local Settings/Application Data/gh-release/c
 
 ## Motivation
 
-There are packages that already do something like this, and they're great, but I want something that does this one thing really well and nothing else, leans heavily on standards in `package.json` and `CHANGELOG.md`, and can work both as a CLI tool and programmatically in node.
+There are packages that already do something like this, and they're great, but I want something that does this one thing really well and nothing else, leans heavily on standards in `package.json` and `README.md`, and can work both as a CLI tool and programmatically in node.
 
 ## Contributing
 
@@ -188,7 +188,7 @@ Any other conventions (autochangelog, standard-version, etc.) are not currently 
 
 ## History
 
-Please read the [change log](CHANGELOG.md) for a human-readable history of changes.
+Please read the [change log](README.md) for a human-readable history of changes.
 
 ## Tests
 

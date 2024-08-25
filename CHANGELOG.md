@@ -338,7 +338,7 @@ BREAKING CHANGES:
 - add oauth2 token authentication method [#5](https://github.com/ungoldman/gh-release/issues/5)
 - add `CONTRIBUTING.md`
 - refactor getDefaults, cli
-- fix error when in directories w/o `package.json` & `CHANGELOG.md` [#9](https://github.com/ungoldman/gh-release/issues/9)
+- fix error when in directories w/o `package.json` & `README.md` [#9](https://github.com/ungoldman/gh-release/issues/9)
 
 ## [1.0.8](https://github.com/ungoldman/gh-release/compare/v1.0.7...v1.0.8) - 2015-02-22
 
@@ -361,7 +361,7 @@ BREAKING CHANGES:
 
 ## [1.0.5](https://github.com/ungoldman/gh-release/compare/v1.0.4...v1.0.5) - 2015-02-08
 
-- hotfix for help/usage in dir w/o `package.json` or `CHANGELOG.md`
+- hotfix for help/usage in dir w/o `package.json` or `README.md`
 
 ## [1.0.4](https://github.com/ungoldman/gh-release/compare/v1.0.3...v1.0.4) - 2015-02-07
 
