@@ -1,70 +1,29 @@
-const path = require('path')
-const fs = require('fs')
-const changelogParser = require('changelog-parser')
-const exec = require('shelljs').exec
-const parseRepo = require('github-url-to-object')
+const path = require('path');
+const fs = require('fs');
+const exec = require('shelljs').exec;
+const parseRepo = require('github-url-to-object');
 
-function getDefaults (workPath, isEnterprise, callback) {
-  const pkg = readJson(path.resolve(workPath, 'package.json'))
-  const lernaPath = path.resolve(workPath, 'lerna.json')
+function getDefaults(workPath, isEnterprise, callback) {
+  const pkg = readJson(path.resolve(workPath, 'package.json'));
+  const logPath = path.resolve(workPath, 'CHANGELOG.md');
 
-  if (!Object.hasOwnProperty.call(pkg, 'repository')) {
-    return callback(new Error('You must define a repository for your module => https://docs.npmjs.com/files/package.json#repository'))
-  }
+  try {
+    const changelog = fs.readFileSync(logPath, 'utf-8'); 
 
-  const commit = getTargetCommitish()
-  const repoParts = parseRepo(pkg.repository, {
-    enterprise: isEnterprise
-  })
-  if (!repoParts) {
-    return callback(new Error('The repository defined in your package.json is invalid => https://docs.npmjs.com/files/package.json#repository'))
-  }
-  const owner = repoParts.user
-  const repo = repoParts.repo
-  const logPath = path.resolve(workPath, 'README.md')
-
-  changelogParser(logPath, function (err, result) {
-    if (err) return callback(err)
-
-    // check for 'unreleased' section in CHANGELOG: allow sections which do not include a body (eg. 'Added', 'Changed', etc.)
-
-    const unreleased = result.versions.filter(function (release) {
-      return release.title && release.title.toLowerCase
-        ? release.title.toLowerCase().indexOf('unreleased') !== -1
-        : false
-    }).filter(function (release) {
-      return Object.values(release.parsed).flat().length > 0
-    })
-
-    if (unreleased.length > 0) {
-      return callback(new Error('Unreleased changes detected in README.md, aborting'))
+    const repoParts = parseRepo(pkg.repository, {
+      enterprise: isEnterprise
+    });
+    if (!repoParts) {
+      return callback(new Error('The repository defined in your package.json is invalid => https://docs.npmjs.com/files/package.json#repository'));
     }
+    const owner = repoParts.user;
+    const repo = repoParts.repo;
 
-    const log = result.versions.filter(function (release) { return release.version !== null })[0]
-
-    if (!log) {
-      return callback(new Error('README.md does not contain any versions'))
-    }
-
-    let lerna = {}
-    let errStr
-    if (fs.existsSync(lernaPath)) {
-      lerna = readJson(lernaPath) /* || {} */ // 👈 though I prefer this expression
-      if (log.version !== lerna.version) {
-        errStr = 'README.md out of sync with lerna.json '
-        errStr += '(' + (log.version || log.title) + ' !== ' + lerna.version + ')'
-        return callback(new Error(errStr))
-      }
-    } else if (log.version !== pkg.version) {
-      errStr = 'README.md out of sync with package.json '
-      errStr += '(' + (log.version || log.title) + ' !== ' + pkg.version + ')'
-      return callback(new Error(errStr))
-    }
-
-    const version = pkg.version ? 'v' + pkg.version : lerna.version ? 'v' + lerna.version : null
+    const commit = getTargetCommitish();
+    const version = pkg.version ? 'v' + pkg.version : null;
 
     callback(null, {
-      body: log.body,
+      body: changelog, 
       assets: false,
       owner,
       repo,
@@ -77,8 +36,11 @@ function getDefaults (workPath, isEnterprise, callback) {
       target_commitish: commit,
       tag_name: version,
       name: version
-    })
-  })
+    });
+
+  } catch (err) {
+    return callback(new Error('Error reading CHANGELOG.md: ' + err.message));
+  }
 }
 
 function getTargetCommitish () {
