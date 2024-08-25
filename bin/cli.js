@@ -20,11 +20,11 @@ updateNotifier({ pkg }).notify()
 
 // check dir
 
-const pkgExists = fs.existsSync(path.resolve(argv.workpath, 'package.json'))
+
 const logExists = fs.existsSync(path.resolve(argv.workpath, 'CHANGELOG.md'))
 
 if (!pkgExists || !logExists) {
-  console.log('Must be run in a directory with package.json and CHANGELOG.md')
+  console.log('Must be run in a directory with CHANGELOG.md')
   yargs.showHelp()
   process.exit(1)
 }
