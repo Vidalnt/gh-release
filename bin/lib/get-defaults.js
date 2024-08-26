@@ -19,7 +19,7 @@ function getDefaults(workPath, isEnterprise, callback) {
     const owner = repoParts.user;
     const repo = repoParts.repo;
 
-    const commit = getTargetCommitish();
+    const commit = "main"
     const version = pkg.version ? 'v' + pkg.version : null;
 
     callback(null, {
